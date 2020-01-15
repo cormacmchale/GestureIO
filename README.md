@@ -5,4 +5,5 @@ Gesture-Based Type Writer
 * Cormac McHale
 * Kevin Niland
 
-### Research Links
+### Development
+Will wait for more info in class on hardware/software before continuing..
