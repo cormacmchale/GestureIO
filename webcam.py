@@ -9,15 +9,11 @@ a = 0
 
 while True:
     check, frame = webcam.read()
-
     cv2.imshow("Capturing...", frame)
     edges = cv2.Canny(frame,100,100)
-    plt.subplot(121),plt.imshow(frame,cmap = 'gray')
-    plt.title('Original Image'), plt.xticks([]), plt.yticks([])
     plt.subplot(122),plt.imshow(edges,cmap = 'gray')
     plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
     plt.show()
-
     # cv2.waitKey(0)
     key = cv2.waitKey(1)
     if key == ord('q'):
