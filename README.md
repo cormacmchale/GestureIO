@@ -6,4 +6,4 @@ Gesture-Based Type Writer
 * Kevin Niland
 
 ### Development
-Will wait for more info in class on hardware/software before continuing..
+* **Language:** Python
