@@ -59,6 +59,8 @@ while (running):
 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         img.save("croppedImage.png")
+        img.load()
+        data = np.asarray( img, dtype="int32" )
 
         running = False
         
@@ -68,7 +70,11 @@ while (running):
         pixelInfo = cv2.imread('croppedImage.png')
         # print(pixelinfo.size)
 
-        np.savetxt("imagedata.txt", pixelInfo.reshape((3, -1))) # Without header
+        pixelInfo[pixelInfo>0] = 255
+        pixelInfo[pixelInfo==0] = 0
+
+        #np.savetxt("imagedata.txt", data.reshape((3, -1)),fmt='%5.0f') # Without header
+        np.savetxt("imagedata.txt", data,fmt='%1.0f')
         break
 
 # Stop the webcam
