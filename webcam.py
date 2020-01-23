@@ -7,16 +7,29 @@ import PIL
 
 # Remove black bars from video
 webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
+
 running = True
+
+basewidth = 100
+firstThreshold = 100
+secondThreshold = 100
+startLeft = 80
+startTop = 80
+endRight = 300
+endBottom = 300
+color = (0, 255, 0)
+thickness = 1
+
 while (running):
     check, frame = webcam.read()
+
     # Use Canny to find edges in the image
-    newFrame = cv2.rectangle(frame, (80,80), (300, 300), (0, 255, 0), 1) 
-    edges = cv2.Canny(frame, 100, 100)
-    #edgesTwo = frame[80:80,300:300]
+    newFrame = cv2.rectangle(frame, (startLeft, startTop), (endRight, endBottom), color, thickness)
+
+    edges = cv2.Canny(frame, firstThreshold, secondThreshold)
+    # edgesTwo = frame[80:80,300:300]
 
     cv2.imshow("Capturing...", edges)
-    
 
     # plt.subplot(122),plt.imshow(edges,cmap = 'gray')
     # plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
@@ -29,21 +42,33 @@ while (running):
 
     # If user presses 'Q', program will will quit
     if key == ord('q'):
-        cv2.imwrite('check.jpg',cv2.Canny(frame, 100, 100))
-        basewidth = 100
-        img = Image.open('check.jpg')
-        wpercent = (basewidth/float(img.size[0]))
-        hsize = int((float(img.size[1])*float(wpercent)))
-        img = img.resize((basewidth,hsize), Image.ANTIALIAS)
-        img.save('resize.jpg') 
-        #edgesCheck = newEdges.thumbnail(100,Image.ANTIALIAS)
-        #cv2.imshow(edgesCheck)
+        cv2.imwrite('originalImage.png', cv2.Canny(frame, 100, 100))
+
+        # Open the captured gesture
+        img = Image.open('originalImage.png')
+
+        # Unused as for now - revisit when building the dataset
+        # wPercent = (basewidth / float(img.size[0]))
+        # hSize = int((float(img.size[1]) * float(wPercent)))
+
+        # img = img.resize((basewidth, hSize), Image.ANTIALIAS)
+        # img.save('resize.png') 
+
+        # edgesCheck = newEdges.thumbnail(100,Image.ANTIALIAS)
+        # cv2.imshow(edgesCheck)
+
+        img = img.crop((startLeft, startTop, endRight, endBottom))
+        img.save("croppedImage.png")
+
         running = False
+        
         # Save numpy array to text file
         # np.savetxt("imagedata.txt", edges.reshape((3, -1)), fmt="%s", header=str(frame.shape)) # With header
-        pixelinfo = cv2.imread('resize.jpg')
-        print(pixelinfo.size)
-        np.savetxt("imagedata.txt", pixelinfo.reshape((3,-1))) # Without header
+
+        pixelInfo = cv2.imread('croppedImage.png')
+        # print(pixelinfo.size)
+
+        np.savetxt("imagedata.txt", pixelInfo.reshape((3, -1))) # Without header
         break
 
 # Stop the webcam
