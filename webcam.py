@@ -22,6 +22,8 @@ thickness = 1
 
 counter = 1
 
+print('Recording...')
+
 while (running):
     check, frame = webcam.read()
 
@@ -36,8 +38,8 @@ while (running):
     cv2.imshow("SignWriter", edges)
     key = cv2.waitKey(1)
 
-    # If user presses 'Q', program will will quit
-    if key == ord('q'):
+    # If user presses 'Q', program will capture image
+    if key == ord('c'):
         # Save frame of webcam to an image
         cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
 
@@ -52,10 +54,14 @@ while (running):
         data = np.asarray(img, dtype='int32')
         # print(data.size)
 
-        # running = False
-
         np.savetxt('dataset/data/imagedata' + str(counter) + '.txt', data, fmt='%1.0f')
-        counter += 1   
+        counter += 1
+
+    if key == ord('q'):
+        print('Quitting program...')
+
+        running = False
+        break  
 
 # Stop the webcam
 webcam.release()
