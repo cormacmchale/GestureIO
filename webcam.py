@@ -52,14 +52,15 @@ while (running):
         img.load()
 
         data = np.asarray(img, dtype='int32')
+        data[data>0] = 1
         # print(data.size)
 
-        np.savetxt('dataset/data/imagedata' + str(counter) + '.txt', data, fmt='%1.0f')
+        np.savetxt('dataset/data/imagedata' + str(counter) + '.txt', data, fmt='%s', delimiter='')
         counter += 1
 
     if key == ord('q'):
         print('Quitting program...')
-
+        
         running = False
         break  
 
