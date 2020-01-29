@@ -20,8 +20,6 @@ endBottom = 300
 color = (0, 255, 0)
 thickness = 1
 
-counter = 1
-
 print('Recording...')
 
 while (running):
@@ -29,7 +27,7 @@ while (running):
 
     # cv2.rectangle() method is used to draw a rectangle on any image - gesture will be performed within the 
     # rectangle - For proccessing the image, the dataset will be built from the image captured within the rectangle
-    newFrame = cv2.rectangle(frame, (startLeft, startTop), (endRight, endBottom), color, thickness)
+    newFrame = cv2.rectangle(frame, (startLeft-5, startTop-5), (endRight+5, endBottom+5), color, thickness)
 
     # Use Canny to find edges in the image
     edges = cv2.Canny(frame, firstThreshold, secondThreshold)
@@ -41,22 +39,22 @@ while (running):
     # If user presses 'Q', program will capture image
     if key == ord('c'):
         # Save frame of webcam to an image
-        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
+        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 120, 120))
 
         # Open the captured gesture
         # No need to create multiple original images as the dataset won't be built from this image
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         
-        img.save('dataset/images/croppedImage' + str(counter) + '.png')
-        img.load()
+        #img.save('dataset/images/croppedImage.png')
+        #img.load()
 
         data = np.asarray(img, dtype='int32')
         data[data>0] = 1
-        # print(data.size)
-
-        np.savetxt('dataset/data/imagedata' + str(counter) + '.txt', data, fmt='%s', delimiter='')
-        counter += 1
+        print(data.shape)
+        f = open('dataset/data/imagedata.txt','a')
+        np.savetxt(f, data, fmt='%s', delimiter='')
+        f.close();
 
     if key == ord('q'):
         print('Quitting program...')
