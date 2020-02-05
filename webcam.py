@@ -49,12 +49,24 @@ while (running):
         #img.save('dataset/images/croppedImage.png')
         #img.load()
 
+        f = open('dataset/data/data.csv','a')
+
         data = np.asarray(img, dtype='int32')
         data[data>0] = 1
-        print(data.shape)
-        f = open('dataset/data/imagedata.txt','a')
-        np.savetxt(f, data, fmt='%s', delimiter='')
-        f.close();
+        #print(data.shape)
+        #print(data.size)
+        #print(data.dtype)
+        #f = open('dataset/data/imagedata.npz','w')
+        #np.savetxt(f, data, fmt='%s', delimiter='')
+        #np.save(f, data,fmt='%s', delimiter='')
+        np.savetxt(f, data, delimiter=',', fmt='%s')
+        #checkArray = np.loadtxt('dataset/data/data.csv',delimiter=',')
+        #checkArray.reshape(3,220,220)
+        #print(checkArray.shape)
+        #print(checkArray.size)
+        #print(data.dtype)
+       
+        #f.close();
 
     if key == ord('q'):
         print('Quitting program...')
