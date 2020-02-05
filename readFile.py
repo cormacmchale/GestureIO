@@ -3,7 +3,7 @@ import numpy as np
 #f = open('dataset/data/imagedata.txt')
 #contents = f.read()
 #f.close()
-checkArray = np.loadtxt('dataset/data/imagedata.csv', delimiter=',')
-checkArray = checkArray.reshape(2, 220, 220)
-
-np.savetxt("newImage.csv", checkArray[0], delimiter=',', fmt='%s')
+checkArray = np.loadtxt('dataset/data/imagedata.csv')
+checkArray = checkArray.reshape(8, 220, 220)
+print(checkArray.shape)
+print(checkArray.size)

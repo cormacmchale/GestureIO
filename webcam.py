@@ -55,8 +55,8 @@ while (running):
 
         f = open('dataset/data/imagedata.csv', 'a')
 
-        data = np.asarray(img, dtype='int32')
-        data[data > 0] = 1
+        data = np.asarray(img, dtype='uint8')
+        #data[data > 0] = 1
 
         # print(data.shape)
         # print(data.size)
@@ -65,7 +65,9 @@ while (running):
         # f = open('dataset/data/imagedata.npz', 'w')
 
         # np.savetxt(f, data, fmt='%s', delimiter='')
-        np.savetxt(f, data, delimiter=',', fmt='%s')
+        np.savetxt(f, data, fmt='%s')
+        
+        f.close()
 
         #checkArray = np.loadtxt('dataset/data/imagedata.csv', delimiter=',')
         #checkArray.reshape(int (captureCounter), 220 / int (captureCounter), 220)
