@@ -67,16 +67,13 @@ while (running):
         # np.savetxt(f, data, fmt='%s', delimiter='')
         np.savetxt(f, data, delimiter=',', fmt='%s')
 
-        checkArray = np.loadtxt('dataset/data/imagedata.csv', delimiter=',')
-        checkArray.reshape(int (captureCounter), 220 / int (captureCounter), 220)
-
-        print(captureCounter)
-        print(checkArray.shape)
-        print(checkArray.size)
+        #checkArray = np.loadtxt('dataset/data/imagedata.csv', delimiter=',')
+        #checkArray.reshape(int (captureCounter), 220 / int (captureCounter), 220)
+        #print(captureCounter)
+        #print(checkArray.shape)
+        #print(checkArray.size)
         # print(data.dtype)
-       
         # f.close();
-
     if key == ord('q'):
         print('Quitting program...')
         
