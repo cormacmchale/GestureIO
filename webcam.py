@@ -46,7 +46,7 @@ while (running):
         f.close()
         captureCounter = captureCounter + 1
         #stop appending images
-        if(captureCounter==99):
+        if(captureCounter==100):
             captureImages = False
 
     # If user presses 'c', begin capture for 100 frames

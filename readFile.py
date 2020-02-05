@@ -4,6 +4,6 @@ import numpy as np
 #contents = f.read()
 #f.close()
 checkArray = np.loadtxt('dataset/data/imagedata.csv')
-checkArray = checkArray.reshape(99, 220, 220)
+checkArray = checkArray.reshape(199, 220, 220)
 print(checkArray.shape)
 print(checkArray.size)
