@@ -4,7 +4,6 @@ import keras as kr
 
 # Get model onto server for use
 from keras.models import load_model
-from matplotlib import pyplot as plt
 import numpy as np
 import PIL
 from PIL import Image 
@@ -21,15 +20,15 @@ webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
 running = True
 
 basewidth = 100
-firstThreshold = 100
-secondThreshold = 100
+firstThreshold = 40
+secondThreshold = 60
 startLeft = 80
 startTop = 80
 endRight = 300
 endBottom = 300
-color = (0, 255, 0)
+color = (0, 0, 0)
 thickness = 1
-frameCounter = 0
+frameCounter = 2
 captureCounter = 0
 captureImages = False
 
@@ -37,19 +36,21 @@ print('Recording...')
 
 while (running):
     check, frame = webcam.read()
-    # cv2.rectangle() method is used to draw a rectangle on any image - gesture will be performed within the 
-    # rectangle - For proccessing the image, the dataset will be built from the image captured within the rectangle
-    newFrame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
-    # Use Canny to find edges in the image
-    edges = cv2.Canny(frame, firstThreshold, secondThreshold)
-    # edgesTwo = frame[80:80,300:300]
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    grayFiltered = cv2.bilateralFilter(gray, 7, 50, 50)
+    #edgesFiltered = cv2.Canny(grayFiltered, firstThreshold, secondThreshold)
+    edges = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
+    edgesFiltered = cv2.Canny(grayFiltered, firstThreshold, secondThreshold)
+    
     cv2.imshow("SignWriter", edges)
+    cv2.imshow("filtered", edgesFiltered)
+
     key = cv2.waitKey(1)
 
 
     # Build a large set of images
     if(captureImages):
-        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 200))
+        cv2.imwrite('temp/originalImage.png', edgesFiltered)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         f = open('dataset/data/imagedata.npy', 'a')
@@ -61,31 +62,40 @@ while (running):
         if(captureCounter==200):
             captureImages = False
             # Reset
+            print("finished")
             captureCounter = 0
     
     #analyse every x amount of frames
-    captureCounter = captureCounter + 1
-    if(captureCounter % 60 == 0):
-        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
+    frameCounter = frameCounter + 1
+    if(frameCounter %  55 == 0):
+        cv2.imwrite('temp/originalImage.png', edgesFiltered)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         data = np.asarray(img, dtype='uint8').reshape(1,48400)
-        # data[data > 0] = 1
-        # data[data < 1] = 0
+        inputVector = data.copy()
+        #img = np.array(Image.open(filename))
+        #inputVector.setflags(write=1)
+        inputVector[inputVector > 0] = 1
+        inputVector[inputVector < 1] = 0
         prediction = abstractPredic(data, numberRecoq)
         f = open('predictions/checkPrediction.txt', 'a')
         # Perfrom action here for gesture recognition
         if(prediction == 0):
             f.write("No Gesture" + "\n")
         elif (prediction == 1):
-            f.write("Open" + "\n")
-            webbrowser.open('https://www.google.com/', new=2)
+            f.write("Open Hand" + "\n")
+            #webbrowser.open('https://www.google.com/', new=2)
+            #removed for testing
         elif(prediction == 2):
             f.write("Peace Sign" + "\n")
+        elif(prediction == 3):
+            f.write("A MIGHTY FIST" + "\n")
+        elif(prediction == 4):
+            f.write("Garbage" + "\n")
         else:
             f.write("ERROR: You shouldn't see this")
         f.close()
-        captureCounter = 0
+        frameCounter = 0
       
     #user interaction
     # If user presses 'c', begin capture for 100 frames
@@ -95,7 +105,7 @@ while (running):
         else:
             captureImages = True
     if key == ord('p'):
-        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
+        cv2.imwrite('temp/originalImage.png', edgesFiltered)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         data = np.asarray(img, dtype='uint8').reshape(1,48400)
@@ -108,7 +118,7 @@ while (running):
             f.write("No Gesture" + "\n")
         elif (prediction == 1):
             f.write("Open" + "\n")
-            webbrowser.open('https://www.google.com/', new=2)
+            #webbrowser.open('https://www.google.com/', new=2)
         elif(prediction == 2):
             f.write("Peace Sign" + "\n")
         else:
@@ -119,6 +129,17 @@ while (running):
         running = False
         break  
 
+    #organising the edges detection
+    if key == ord('y'):
+        firstThreshold = firstThreshold + 20
+        print ("first Threshold "+str(firstThreshold))
+    if key == ord('h'):
+        firstThreshold = firstThreshold - 20  
+    if key == ord('u'):
+        secondThreshold = secondThreshold + 20
+        print ("second Threshold "+str(secondThreshold))
+    if key == ord('j'):
+        secondThreshold = secondThreshold - 20       
 # Stop the webcam
 webcam.release()
 cv2.destroyAllWindows
