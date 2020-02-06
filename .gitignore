@@ -2,5 +2,7 @@ savedModel/
 dataset/
 __pycache__/
 predictions/
-ipynb_checkpoints/model-checkpoint.ipynb
-.vscode/settings.json
+ipynb_checkpoints/
+.vscode/
+temp/
+images/
