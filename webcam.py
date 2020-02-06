@@ -29,6 +29,7 @@ endRight = 300
 endBottom = 300
 color = (0, 255, 0)
 thickness = 1
+frameCounter = 0
 captureCounter = 0
 captureImages = False
 
@@ -36,78 +37,90 @@ print('Recording...')
 
 while (running):
     check, frame = webcam.read()
-
     # cv2.rectangle() method is used to draw a rectangle on any image - gesture will be performed within the 
     # rectangle - For proccessing the image, the dataset will be built from the image captured within the rectangle
     newFrame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
-
     # Use Canny to find edges in the image
     edges = cv2.Canny(frame, firstThreshold, secondThreshold)
-
     # edgesTwo = frame[80:80,300:300]
     cv2.imshow("SignWriter", edges)
     key = cv2.waitKey(1)
+
 
     # Build a large set of images
     if(captureImages):
         cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 200))
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-
         f = open('dataset/data/imagedata.npy', 'a')
         data = np.asarray(img, dtype='uint8')
         np.savetxt(f, data, fmt='%s')        
         f.close()
-
         captureCounter = captureCounter + 1
-
         # Stop appending images
         if(captureCounter==200):
             captureImages = False
-
             # Reset
             captureCounter = 0
-
-    # If user presses 'c', begin capture for 100 frames
-    if key == ord('c'):
-        if(captureImages):
-            captureImages = False
-        else:
-            captureImages = True
-
-    if key == ord('p'):
+    
+    #analyse every x amount of frames
+    captureCounter = captureCounter + 1
+    if(captureCounter % 60 == 0):
         cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         data = np.asarray(img, dtype='uint8').reshape(1,48400)
-
         # data[data > 0] = 1
         # data[data < 1] = 0
-
         prediction = abstractPredic(data, numberRecoq)
         f = open('predictions/checkPrediction.txt', 'a')
-                 
-        # Perfrom action here for gesture recognition 
+        # Perfrom action here for gesture recognition
         if(prediction == 0):
             f.write("No Gesture" + "\n")
         elif (prediction == 1):
-            f.write("Fist" + "\n")
+            f.write("Open" + "\n")
             webbrowser.open('https://www.google.com/', new=2)
         elif(prediction == 2):
             f.write("Peace Sign" + "\n")
         else:
             f.write("ERROR: You shouldn't see this")
         f.close()
-
+        captureCounter = 0
+      
+    #user interaction
+    # If user presses 'c', begin capture for 100 frames
+    if key == ord('c'):
+        if(captureImages):
+            captureImages = False
+        else:
+            captureImages = True
+    if key == ord('p'):
+        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
+        img = Image.open('temp/originalImage.png') 
+        img = img.crop((startLeft, startTop, endRight, endBottom))
+        data = np.asarray(img, dtype='uint8').reshape(1,48400)
+        # data[data > 0] = 1
+        # data[data < 1] = 0
+        prediction = abstractPredic(data, numberRecoq)
+        f = open('predictions/checkPrediction.txt', 'a')
+        # Perfrom action here for gesture recognition
+        if(prediction == 0):
+            f.write("No Gesture" + "\n")
+        elif (prediction == 1):
+            f.write("Open" + "\n")
+            webbrowser.open('https://www.google.com/', new=2)
+        elif(prediction == 2):
+            f.write("Peace Sign" + "\n")
+        else:
+            f.write("ERROR: You shouldn't see this")
+        f.close()
     if key == ord('q'):
         print('Quitting program...')  
-
         running = False
         break  
 
 # Stop the webcam
 webcam.release()
-
 cv2.destroyAllWindows
 
 ''' Unused code '''
