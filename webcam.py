@@ -5,6 +5,14 @@ import numpy as np
 import PIL
 from PIL import Image  
 
+import keras as kr
+#get model onto server for use
+from keras.models import load_model
+numberRecoq = load_model('savedModel/imageRecog.h5')
+
+#thread issue fix
+from returnPrediction import abstractPredic
+
 # Remove black bars from video
 webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
 
@@ -37,17 +45,19 @@ while (running):
 
     #build a large set of images
     if(captureImages):
-        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 120, 120))
+        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-        f = open('dataset/data/imagedata.csv', 'a')
+        f = open('dataset/data/imagedata.npy', 'a')
         data = np.asarray(img, dtype='uint8')
         np.savetxt(f, data, fmt='%s')        
         f.close()
         captureCounter = captureCounter + 1
         #stop appending images
-        if(captureCounter==100):
+        if(captureCounter==200):
             captureImages = False
+            #reset
+            captureCounter = 0
 
     # If user presses 'c', begin capture for 100 frames
     if key == ord('c'):
@@ -55,6 +65,27 @@ while (running):
             captureImages = False
         else:
             captureImages = True
+
+    if key == ord('p'):
+        cv2.imwrite('temp/originalImage.png', cv2.Canny(frame, 100, 100))
+        img = Image.open('temp/originalImage.png') 
+        img = img.crop((startLeft, startTop, endRight, endBottom))
+        data = np.asarray(img, dtype='uint8').reshape(1,48400)
+        #data[data>0] = 1
+        #data[data<1] = 0
+        prediction = abstractPredic(data, numberRecoq)
+        f = open('predictions/checkPrediction.txt', 'a')
+                 
+        #perfrom action here for gesture recognition 
+        if(prediction == 0):
+            f.write("No Gesture"+"\n")
+        elif (prediction == 1):
+            f.write("Open Hand"+"\n")
+        elif(prediction == 2):
+            f.write("Peace Sign"+"\n")
+        else:
+            f.write("error you shouldn't see this")
+        f.close()
 
     if key == ord('q'):
         print('Quitting program...')        
