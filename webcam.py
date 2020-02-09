@@ -4,6 +4,7 @@ import keras as kr
 
 # Get model onto server for use
 from keras.models import load_model
+import keyboard
 from matplotlib import pyplot as plt
 import numpy as np
 import PIL
@@ -95,6 +96,7 @@ while (running):
             webbrowser.open('https://www.google.com/', new=2)
         elif(prediction == 2):
             f.write("Peace Sign" + "\n")
+            keyboard.write("hello friend")
         else:
             f.write("ERROR: You shouldn't see this")
         f.close()
