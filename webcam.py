@@ -29,7 +29,7 @@ endBottom = 300
 color = (0, 0, 0)
 thickness = 1
 frameCounter = 2
-captureCounter = 0
+captureCounter = 2
 captureImages = False
 
 print('Recording...')
@@ -38,7 +38,6 @@ while (running):
     check, frame = webcam.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     grayFiltered = cv2.bilateralFilter(gray, 7, 50, 50)
-    #edgesFiltered = cv2.Canny(grayFiltered, firstThreshold, secondThreshold)
     edges = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
     edgesFiltered = cv2.Canny(grayFiltered, firstThreshold, secondThreshold)
     
@@ -84,7 +83,7 @@ while (running):
             f.write("No Gesture" + "\n")
         elif (prediction == 1):
             f.write("Open Hand" + "\n")
-            #webbrowser.open('https://www.google.com/', new=2)
+            #webbrowser.open('https://learnonline.gmit.ie/', new=2)
             #removed for testing
         elif(prediction == 2):
             f.write("Peace Sign" + "\n")
