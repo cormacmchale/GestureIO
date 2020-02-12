@@ -20,8 +20,8 @@ webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
 running = True
 
 basewidth = 100
-firstThreshold = 40
-secondThreshold = 60
+firstThreshold = -10
+secondThreshold = -10
 startLeft = 80
 startTop = 80
 endRight = 300
@@ -29,7 +29,7 @@ endBottom = 300
 color = (0, 0, 0)
 thickness = 1
 frameCounter = 2
-captureCounter = 2
+captureCounter = 0
 captureImages = False
 
 print('Recording...')
@@ -43,9 +43,7 @@ while (running):
     
     cv2.imshow("SignWriter", edges)
     cv2.imshow("filtered", edgesFiltered)
-
     key = cv2.waitKey(1)
-
 
     # Build a large set of images
     if(captureImages):
@@ -56,14 +54,15 @@ while (running):
         data = np.asarray(img, dtype='uint8')
         np.savetxt(f, data, fmt='%s')        
         f.close()
-        captureCounter = captureCounter + 1
 
+        captureCounter = captureCounter + 1
         # Stop appending images
-        if(captureCounter==200):
+        if(captureCounter==600):
             captureImages = False
 
             # Reset
             print("finished")
+            running = False
             captureCounter = 0
     
     #analyse every x amount of frames
@@ -84,22 +83,20 @@ while (running):
 
         inputVector[inputVector > 0] = 1
         inputVector[inputVector < 1] = 0
-        prediction = abstractPredic(data, numberRecoq)
+        prediction = abstractPredic(inputVector, numberRecoq)
 
         f = open('predictions/checkPrediction.txt', 'a')
         # Perfrom action here for gesture recognition
         if(prediction == 0):
-            f.write("No Gesture" + "\n")
-        elif (prediction == 1):
             f.write("Open Hand" + "\n")
-            webbrowser.open('https://learnonline.gmit.ie/', new=2)
+        elif (prediction == 1):
+            f.write("Peace Sign" + "\n")
+            #webbrowser.open('https://learnonline.gmit.ie/', new=2)
             #removed for testing
         elif(prediction == 2):
-            f.write("Peace Sign" + "\n")
-        elif(prediction == 3):
             f.write("A MIGHTY FIST" + "\n")
-        elif(prediction == 4):
-            f.write("Garbage" + "\n")
+        elif(prediction == 3):
+            f.write("Ignore Gesture" + "\n")
         else:
             f.write("ERROR: You shouldn't see this")
 

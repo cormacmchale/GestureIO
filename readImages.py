@@ -5,7 +5,7 @@ import numpy as np
 # f.close()
 
 checkArray = np.loadtxt('dataset/data/imagedata.npy')
-checkArray = checkArray.reshape(1000, 48400)
+checkArray = checkArray.reshape(1800, 48400)
 
 print(checkArray.shape)
 print(checkArray.size)
