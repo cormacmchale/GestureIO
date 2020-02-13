@@ -7,7 +7,8 @@ from keras.models import load_model
 import numpy as np
 import PIL
 from PIL import Image 
-import webbrowser 
+import webbrowser
+import subprocess
 
 fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
 numberRecoq = load_model('savedModel/imageRecog.h5')
@@ -94,10 +95,11 @@ while (running):
             f.write("Open Hand" + "\n")
         elif (prediction == 1):
             f.write("Peace Sign" + "\n")
-            webbrowser.open('https://learnonline.gmit.ie/', new=2)
+            #webbrowser.open('https://learnonline.gmit.ie/', new=2)
             #removed for testing
         elif(prediction == 2):
             f.write("A MIGHTY FIST" + "\n")
+            #subprocess.call(['C:\Program Files\Microsoft VS Code\Code.exe'])
         elif(prediction == 3):
             f.write("Ignore Gesture" + "\n")
         else:
