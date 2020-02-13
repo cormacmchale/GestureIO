@@ -1,14 +1,16 @@
 import cv2
 import keyboard
 import keras as kr
-
+from matplotlib import pyplot as plt
 # Get model onto server for use
 from keras.models import load_model
 import numpy as np
 import PIL
 from PIL import Image 
-import webbrowser 
+import webbrowser
+import subprocess
 
+fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
 numberRecoq = load_model('savedModel/imageRecog.h5')
 
 # Thread issue fix
@@ -20,8 +22,8 @@ webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
 running = True
 
 basewidth = 100
-firstThreshold = -10
-secondThreshold = -10
+firstThreshold = 50
+secondThreshold = 50
 startLeft = 80
 startTop = 80
 endRight = 300
@@ -37,17 +39,22 @@ print('Recording...')
 while (running):
     check, frame = webcam.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    grayFiltered = cv2.bilateralFilter(gray, 7, 50, 50)
-    edges = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
-    edgesFiltered = cv2.Canny(grayFiltered, firstThreshold, secondThreshold)
+    grayFiltered = cv2.bilateralFilter(gray, 7, 25, 25)
+    grayFilteredagain = cv2.GaussianBlur(grayFiltered, (3, 3), 0)
+    frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
+    edgesFiltered = cv2.Canny(grayFilteredagain, firstThreshold, secondThreshold)
     
-    cv2.imshow("SignWriter", edges)
-    cv2.imshow("filtered", edgesFiltered)
+    fgmask = fgbg.apply(edgesFiltered)
+
+    #cv2.imshow('frame',fgmask)
+    cv2.imshow("SignWriter", frame)
+    
+    #cv2.imshow("filtered", edgesFiltered)
     key = cv2.waitKey(1)
 
     # Build a large set of images
     if(captureImages):
-        cv2.imwrite('temp/originalImage.png', edgesFiltered)
+        cv2.imwrite('temp/originalImage.png', fgmask)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         f = open('dataset/data/imagedata.npy', 'a')
@@ -57,7 +64,7 @@ while (running):
 
         captureCounter = captureCounter + 1
         # Stop appending images
-        if(captureCounter==600):
+        if(captureCounter==300):
             captureImages = False
 
             # Reset
@@ -68,14 +75,11 @@ while (running):
     #analyse every x amount of frames
     frameCounter = frameCounter + 1
 
-    if(frameCounter %  55 == 0):
-        cv2.imwrite('temp/originalImage.png', edgesFiltered)
-
+    if(frameCounter %  30 == 0):
+        cv2.imwrite('temp/originalImage.png', fgmask)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-
         data = np.asarray(img, dtype='uint8').reshape(1, 48400)
-
         inputVector = data.copy()
 
         # img = np.array(Image.open(filename))
@@ -95,6 +99,7 @@ while (running):
             #removed for testing
         elif(prediction == 2):
             f.write("A MIGHTY FIST" + "\n")
+            #subprocess.call(['C:\Program Files\Microsoft VS Code\Code.exe'])
         elif(prediction == 3):
             f.write("Ignore Gesture" + "\n")
         else:
@@ -111,39 +116,28 @@ while (running):
         else:
             captureImages = True
 
+    #practice foreground
+    #https://docs.opencv.org/3.4/d8/d83/tutorial_py_grabcut.html
     if key == ord('p'):
-        cv2.imwrite('temp/originalImage.png', edgesFiltered)
-
+        cv2.imwrite('temp/originalImage.png', frame)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-
-        data = np.asarray(img, dtype='uint8').reshape(1, 48400)
-
-        # data[data > 0] = 1
-        # data[data < 1] = 0
-
-        prediction = abstractPredic(data, numberRecoq)
-        f = open('predictions/checkPrediction.txt', 'a')
-
-        # Perfrom action here for gesture recognition
-        if(prediction == 0):
-            f.write("No Gesture" + "\n")
-        elif (prediction == 1):
-            f.write("Open" + "\n")
-            # webbrowser.open('https://www.google.com/', new=2)
-        elif(prediction == 2):
-            f.write("Peace Sign" + "\n")
-        else:
-            f.write("ERROR: You shouldn't see this")
-        f.close()
-
+        img.save('temp/croppedImage.png')    
+        ##have the image here
+        #imgTwo = cv2.imread('temp/croppedImage.png')
+        #mask = np.zeros(imgTwo.shape[:2],np.uint8) 
+        #bgdModel = np.zeros((1,65),np.float64)
+        #fgdModel = np.zeros((1,65),np.float64)
+        #rect = (0, 0, 200, 200)
+        #cv2.grabCut(imgTwo,mask,rect,bgdModel,fgdModel,2,cv2.GC_INIT_WITH_RECT)
+        #mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+        #imgTwo = imgTwo*mask2[:,:,np.newaxis]
+        #plt.imshow(imgTwo),plt.colorbar(),plt.show()
     if key == ord('q'):
         print('Quitting program...')  
-
         running = False
-        break  
-
-    # Organising the edges detection
+        break
+    # Organising the edge detection manually
     if key == ord('y'):
         firstThreshold = firstThreshold + 20
         print ("first Threshold "+str(firstThreshold))
