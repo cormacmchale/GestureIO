@@ -2,6 +2,7 @@ import cv2
 import keyboard
 import keras as kr
 from matplotlib import pyplot as plt
+
 # Get model onto server for use
 from keras.models import load_model
 import numpy as np

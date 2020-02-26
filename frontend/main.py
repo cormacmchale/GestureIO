@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+import cv2
 
 from PIL import ImageTk, Image
 
@@ -24,4 +25,26 @@ w2 = Label(window, image=photoTwo)
 w1.grid(row=3, column=3)
 w2.grid(row=3, column=2)
 
-window.mainloop()
+webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
+
+
+running = True
+
+while (running):
+    check, frame = webcam.read()
+    test = Label(window,frame)
+    test.grid(row = 4, column = 4)
+    window.mainloop()
+    #cv2.imshow("filtered", edgesFiltered)
+    key = cv2.waitKey(1)
+
+    if key == ord('q'):
+        print('Quitting program...')  
+        running = False
+        break
+
+# Stop the webcam
+webcam.release()
+
+cv2.destroyAllWindows
+
