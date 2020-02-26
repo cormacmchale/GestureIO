@@ -38,7 +38,7 @@ main.grid(row=1, column=1)
 
 def showWebcam():
     _, frame = webcam.read()
-    frame = cv2.flip(frame, 1)
+    #frame = cv2.flip(frame, 1)
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
 
