@@ -96,7 +96,7 @@ while (running):
             f.write("Open Hand" + "\n")
         elif (prediction == 1):
             f.write("Peace Sign" + "\n")
-            #webbrowser.open('https://learnonline.gmit.ie/', new=2)
+            webbrowser.open('https://learnonline.gmit.ie/', new=2)
             #removed for testing
         elif(prediction == 2):
             f.write("A MIGHTY FIST" + "\n")
