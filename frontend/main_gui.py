@@ -34,7 +34,7 @@ w2 = Label(root, image=photoTwo)
 e2 = tk.Entry(root)
 
 w1.grid(row=0, column=2)
-e2.grid(row=0, column=3)
+e1.grid(row=0, column=3)
 w2.grid(row=1, column=2)
 e2.grid(row=1, column=3)
 
@@ -43,8 +43,9 @@ main.grid(row=1, column=1)
 
 def showWebcam():
     _, frame = webcam.read()
-    #frame = cv2.flip(frame, 1)
+    frame = cv2.flip(frame, 1)
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
+    
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
 
     img = Image.fromarray(cv2Image)
