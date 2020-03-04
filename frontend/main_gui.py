@@ -14,6 +14,8 @@ webcam = cv2.VideoCapture(0)
 
 openhand = 'gestureImages/openhand.png'
 fist = 'gestureImages/fist.png'
+peacesign = 'gestureImages/peacesign.png'
+thumbandpinky = 'gestureImages/thumbandpinky.png'
 
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
@@ -26,6 +28,8 @@ root.bind('<Escape>', lambda e: root.quit())
 
 photoOne = PhotoImage(file=openhand)
 photoTwo = PhotoImage(file=fist)
+photoThree = PhotoImage(file=peacesign)
+photoFour = PhotoImage(file=thumbandpinky)
 
 w1 = Label(root, image=photoOne)
 e1 = tk.Entry(root)
@@ -33,10 +37,23 @@ e1 = tk.Entry(root)
 w2 = Label(root, image=photoTwo)
 e2 = tk.Entry(root)
 
+w3 = Label(root, image=photoThree)
+e3 = tk.Entry(root)
+
+w4 = Label(root, image=photoFour)
+e4 = tk.Entry(root)
+
 w1.grid(row=0, column=2)
 e1.grid(row=0, column=3)
+
 w2.grid(row=1, column=2)
 e2.grid(row=1, column=3)
+
+w3.grid(row=2, column=2)
+e3.grid(row=2, column=3)
+
+w4.grid(row=3, column=2)
+e4.grid(row=4, column=3)
 
 # Possible choices for dropdown menu (possibly implemented later?)
 gestureChoices = ["Open Browser", "Open Word", "Open Command Line Prompt"]
@@ -48,7 +65,7 @@ stringVar = tk.StringVar(root)
 stringVar.set(gestureChoices[0])
 
 dropdownMenu = OptionMenu(root, stringVar, *gestureChoices)
-dropdownMenu.grid(row=2, column=2)
+# dropdownMenu.grid(row=2, column=2)
 
 def showWebcam():
     _, frame = webcam.read()
