@@ -38,14 +38,23 @@ e1.grid(row=0, column=3)
 w2.grid(row=1, column=2)
 e2.grid(row=1, column=3)
 
+# Possible choices for dropdown menu (possibly implemented later?)
+gestureChoices = ["Open Browser", "Open Word", "Open Command Line Prompt"]
+
 main = tk.Label(root)
 main.grid(row=1, column=1)
+
+stringVar = tk.StringVar(root)
+stringVar.set(gestureChoices[0])
+
+dropdownMenu = OptionMenu(root, stringVar, *gestureChoices)
+dropdownMenu.grid(row=2, column=2)
 
 def showWebcam():
     _, frame = webcam.read()
     frame = cv2.flip(frame, 1)
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
-    
+
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
 
     img = Image.fromarray(cv2Image)
