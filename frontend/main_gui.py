@@ -28,10 +28,15 @@ photoOne = PhotoImage(file=openhand)
 photoTwo = PhotoImage(file=fist)
 
 w1 = Label(root, image=photoOne)
-w2 = Label(root, image=photoTwo)
+e1 = tk.Entry(root)
 
-w1.grid(row=1, column=2)
-w2.grid(row=2, column=2)
+w2 = Label(root, image=photoTwo)
+e2 = tk.Entry(root)
+
+w1.grid(row=0, column=2)
+e2.grid(row=0, column=3)
+w2.grid(row=1, column=2)
+e2.grid(row=1, column=3)
 
 main = tk.Label(root)
 main.grid(row=1, column=1)
