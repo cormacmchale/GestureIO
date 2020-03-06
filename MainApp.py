@@ -120,7 +120,6 @@ def showWebcam():
         elif(prediction == 3):
             showUser.set("Ignore Gesture") 
         frameCounter = 0
-        f.close()
 showWebcam()
 #print(test)
 root.mainloop()
