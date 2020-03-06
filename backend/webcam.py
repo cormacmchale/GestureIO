@@ -12,7 +12,7 @@ import webbrowser
 import subprocess
 
 fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
-numberRecoq = load_model('savedModel/imageRecog.h5')
+numberRecoq = load_model('../savedModel/imageRecog.h5')
 
 # Thread issue fix
 from returnPrediction import abstractPredic

@@ -64,14 +64,11 @@ dropdownMenu = OptionMenu(root, stringVar, *gestureChoices)
 
 def showWebcam():
     _, frame = webcam.read()
-    frame = cv2.flip(frame, 1)
+    #frame = cv2.flip(frame, 1)
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
-
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-
     img = Image.fromarray(cv2Image)
     imgTK = ImageTk.PhotoImage(image=img)
-
     main.imTK = imgTK
     main.configure(image=imgTK)
     main.after(5, showWebcam)
