@@ -1,0 +1,8 @@
+savedModel/
+dataset/
+__pycache__/
+predictions/
+ipynb_checkpoints/
+.vscode/
+temp/
+images/
