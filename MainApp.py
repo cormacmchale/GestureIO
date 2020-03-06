@@ -14,7 +14,6 @@ from returnPrediction import abstractPredic
 fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
 numberRecoq = load_model('savedModel/imageRecog.h5')
 
-
 # Variables
 width, height = 450, 450
 startLeft, startTop = 80, 80
@@ -24,10 +23,7 @@ thickness = 1
 firstThreshold = 50
 secondThreshold = 50
 
-
 webcam = cv2.VideoCapture(0)
-
-
 
 openhand = './frontend/gestureImages/openhand.png'
 fist = './frontend/gestureImages/fist.png'
@@ -49,6 +45,7 @@ photoThree = PhotoImage(file=peacesign)
 photoFour = PhotoImage(file=thumbandpinky)
 
 test = StringVar()
+showUser = StringVar()
 
 # def assignGesture():
 #     print("Empty")
@@ -63,7 +60,7 @@ e2 = tk.Entry(root).grid(row=1, column=3)
 w3 = Label(root, image=photoThree).grid(row=2, column=2)
 e3 = tk.Entry(root).grid(row=2, column=3)
 
-# w4 = Label(root, image=photoFour).grid(row=3, column=2)
+w4 = Label(root, textvariable=showUser).grid(row=2, column=1)
 # e4 = tk.Entry(root).grid(row=4, column=3)
 
 # Possible choices for dropdown menu (possibly implemented later?)
@@ -71,11 +68,8 @@ gestureChoices = ["Open Browser", "Open Word", "Open Command Line Prompt"]
 
 main = tk.Label(root)
 main.grid(row=1, column=1)
-
-
 stringVar = tk.StringVar(root)
 stringVar.set(gestureChoices[0])
-
 dropdownMenu = OptionMenu(root, stringVar, *gestureChoices)
 # dropdownMenu.grid(row=2, column=2)
 #global frameCounter
@@ -90,7 +84,7 @@ def showWebcam():
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
     edgesFiltered = cv2.Canny(grayFilteredagain, firstThreshold, secondThreshold)
     fgmask = fgbg.apply(edgesFiltered)
-    cv2.imshow("SignWriter", fgmask)
+    #cv2.imshow("SignWriter", fgmask)
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
     img = Image.fromarray(cv2Image)
     imgTK = ImageTk.PhotoImage(image=img)
@@ -104,26 +98,27 @@ def showWebcam():
         cv2.imwrite('temp/originalImage.png', fgmask)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-        NewImg = img.save("temp/croppedPrediction.png");
+        #NewImg = img.save("temp/croppedPrediction.png");
         data = np.asarray(img, dtype='uint8').reshape(1, 48400)
         inputVector = data.copy()
         inputVector[inputVector > 0] = 1
         inputVector[inputVector < 1] = 0
         prediction = abstractPredic(inputVector, numberRecoq)
-        f = open('predictions/checkPrediction.txt', 'a')
         if(prediction == 0):
             url = test.get()
             if (url== ""):
-                 #f.write("Open Hand" + "\n")
+                #w4.config(text="Open Hand")
+                showUser.set("Open Hand")   
             else:
+                showUser.set("Open Hand")
                 webbrowser.open(url, new=2)
         elif (prediction == 1):
-             #f.write("Peace Sign" + "\n")
+            showUser.set("Peace Sign") 
         elif(prediction == 2):
-            #f.write("A MIGHTY FIST" + "\n")
+            showUser.set("Fist") 
             #subprocess.call(['C:\Program Files\Microsoft VS Code\Code.exe'])
         elif(prediction == 3):
-             #f.write("Ignore Gesture" + "\n")
+            showUser.set("Ignore Gesture") 
         frameCounter = 0
         f.close()
 showWebcam()
