@@ -22,7 +22,7 @@ webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
 root = tk.Tk()
 root.title("SignWriter")
-root.geometry("900x700")
+root.geometry("1000x1000")
 root.configure(bg="white")
 root.bind('<Escape>', lambda e: root.quit())
 
@@ -31,35 +31,30 @@ photoTwo = PhotoImage(file=fist)
 photoThree = PhotoImage(file=peacesign)
 photoFour = PhotoImage(file=thumbandpinky)
 
-w1 = Label(root, image=photoOne)
-e1 = tk.Entry(root)
+test = StringVar()
 
-w2 = Label(root, image=photoTwo)
-e2 = tk.Entry(root)
+# def assignGesture():
+#     print("Empty")
 
-w3 = Label(root, image=photoThree)
-e3 = tk.Entry(root)
+w1 = Label(root, image=photoOne).grid(row=0, column=2)
+e1 = tk.Entry(root, textvariable=test).grid(row=0, column=3)
+# btn = Button(root, text="Assign Command", command=assignGesture).grid(row=0, column=4)
 
-w4 = Label(root, image=photoFour)
-e4 = tk.Entry(root)
+w2 = Label(root, image=photoTwo).grid(row=1, column=2)
+e2 = tk.Entry(root).grid(row=1, column=3)
 
-w1.grid(row=0, column=2)
-e1.grid(row=0, column=3)
+w3 = Label(root, image=photoThree).grid(row=2, column=2)
+e3 = tk.Entry(root).grid(row=2, column=3)
 
-w2.grid(row=1, column=2)
-e2.grid(row=1, column=3)
-
-w3.grid(row=2, column=2)
-e3.grid(row=2, column=3)
-
-w4.grid(row=3, column=2)
-e4.grid(row=4, column=3)
+# w4 = Label(root, image=photoFour).grid(row=3, column=2)
+# e4 = tk.Entry(root).grid(row=4, column=3)
 
 # Possible choices for dropdown menu (possibly implemented later?)
 gestureChoices = ["Open Browser", "Open Word", "Open Command Line Prompt"]
 
 main = tk.Label(root)
 main.grid(row=1, column=1)
+
 
 stringVar = tk.StringVar(root)
 stringVar.set(gestureChoices[0])
@@ -82,4 +77,5 @@ def showWebcam():
     main.after(5, showWebcam)
 
 showWebcam()
+print(test)
 root.mainloop()

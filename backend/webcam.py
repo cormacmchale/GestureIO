@@ -89,14 +89,21 @@ while (running):
         inputVector[inputVector > 0] = 1
         inputVector[inputVector < 1] = 0
         prediction = abstractPredic(inputVector, numberRecoq)
-
+        
         f = open('predictions/checkPrediction.txt', 'a')
         # Perfrom action here for gesture recognition
         if(prediction == 0):
             f.write("Open Hand" + "\n")
         elif (prediction == 1):
             f.write("Peace Sign" + "\n")
-            webbrowser.open('https://learnonline.gmit.ie/', new=2)
+            #url = name.get()
+            url = ""
+            if (url== ""):
+                #do nothing
+                print("Empty")
+            else:
+                webbrowser.open(url, new=2)
+
             #removed for testing
         elif(prediction == 2):
             f.write("A MIGHTY FIST" + "\n")
