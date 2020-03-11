@@ -34,12 +34,10 @@ openhand = './frontend/gestureImages/openhand.png'
 fist = './frontend/gestureImages/fist.png'
 peacesign = './frontend/gestureImages/peacesign.png'
 thumbandpinky = './frontend/gestureImages/thumbandpinky.png'
-
 photoOne = PhotoImage(file=openhand)
 photoTwo = PhotoImage(file=fist)
 photoThree = PhotoImage(file=peacesign)
 photoFour = PhotoImage(file=thumbandpinky)
-
 OpenHandCommand = StringVar()
 FistCommand = StringVar()
 showUser = StringVar()
@@ -56,24 +54,29 @@ root.grid_columnconfigure(1, weight=1)
 
 frame1 = tk.Frame(root)
 frame2 = tk.Frame(root)
-frame1.grid(row=0, column=0, sticky="nsew")
-frame2.grid(row=0, column=1, sticky="nsew",padx=50,pady=50)
+frame1.grid(row=0, column=0)
+frame2.grid(row=0, column=1,padx=10)
 
-w1 = Label(frame2, image=photoOne).grid(row=1, column=0, sticky = "ew" ,padx=50)
-s1 = Label(frame2, textvariable=urltext).grid(row=0, column=1)
-e1 = tk.Entry(frame2, textvariable=OpenHandCommand).grid(row=1, column=1)
 
-w2 = Label(frame2, image=photoTwo).grid(row=2, column=0, sticky = "ew",pady=70, padx=50)
-s2 = Label(frame2, textvariable=programtext).grid(row=2, column=1)
-e2 = tk.Entry(frame2, textvariable=FistCommand).grid(row=3, column=1)
+w1 = tk.Label(frame2, image=photoOne).grid(row=0, column=0, sticky="nsew")
+e1 = tk.Entry(frame2, textvariable=OpenHandCommand).grid(row=0, column=1)
+s1 = tk.Label(frame2, textvariable=urltext).grid(row=0, column=1, pady=(0,40))
 
-w3 = Label(frame2, image=photoThree).grid(row=3, column=0, sticky = "ew",padx=50)
-s2 = Label(frame2, textvariable=peacetext).grid(row=4, column=1)
-e3 = tk.Entry(frame2).grid(row=5, column=1)
+
+w2 = Label(frame2, image=photoTwo).grid(row=1, column=0, pady=50, sticky="nsew")
+e2 = tk.Entry(frame2, textvariable=FistCommand).grid(row=1, column=1)
+s2 = Label(frame2, textvariable=programtext).grid(row=1, column=1, pady=(0,40))
+
+
+w3 = Label(frame2, image=photoThree).grid(row=2, column=0, sticky="nsew")
+e3 = tk.Entry(frame2).grid(row=2, column=1)
+s3 = Label(frame2, textvariable=peacetext).grid(row=2, column=1,pady=(0,40))
+#s3.place(side="top")
 
 w4 = Label(frame1, textvariable=showUser).grid(row=1, column=0)
 main = tk.Label(frame1)
 main.grid(row=0, column=0)
+
 ##tracking frames for intermittent prediction 
 frameCounter = 0
 def showWebcam():
@@ -85,7 +88,6 @@ def showWebcam():
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     grayFiltered = cv2.bilateralFilter(gray, 7, 25, 25)
     grayFilteredAgain = cv2.GaussianBlur(grayFiltered, (3, 3), 0)
-
     frame = cv2.rectangle(frame, (startLeft - 5, startTop - 5), (endRight + 5, endBottom + 5), color, thickness)
     edgesFiltered = cv2.Canny(grayFilteredAgain, firstThreshold, secondThreshold)
     fgmask = fgbg.apply(edgesFiltered)
@@ -95,7 +97,6 @@ def showWebcam():
     cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
     img = Image.fromarray(cv2Image)
     imgTK = ImageTk.PhotoImage(image=img)
-
     main.imTK = imgTK
     main.configure(image=imgTK)
     main.after(5, showWebcam)
@@ -110,13 +111,10 @@ def showWebcam():
         cv2.imwrite('temp/originalImage.png', fgmask)
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
-
         data = np.asarray(img, dtype='uint8').reshape(1, 48400)
-
         inputVector = data.copy()
         inputVector[inputVector > 0] = 1
         inputVector[inputVector < 1] = 0
-
         prediction = abstractPredic(inputVector, numberRecoq)
         # End preprocessing
 
@@ -140,7 +138,6 @@ def showWebcam():
         elif(prediction == 3):
             showUser.set("Ignore Gesture")
         # End user gesture take action
-
         frameCounter = 0
 
 # Call show web-cam to begin capturing frames
