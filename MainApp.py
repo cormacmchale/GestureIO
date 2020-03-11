@@ -134,7 +134,7 @@ def showWebcam():
                 showUser.set("Fist")
             else:
                 showUser.set("Fist")
-                os.system(shellcmd)
+                os.startfile("C://Users//Cormac//Desktop//"+shellcmd)
         elif(prediction == 3):
             showUser.set("Ignore Gesture")
         # End user gesture take action
