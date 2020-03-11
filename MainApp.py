@@ -40,8 +40,8 @@ photoTwo = PhotoImage(file=fist)
 photoThree = PhotoImage(file=peacesign)
 photoFour = PhotoImage(file=thumbandpinky)
 
-openHand_command = StringVar()
-fist_command = StringVar()
+OpenHandCommand = StringVar()
+FistCommand = StringVar()
 showUser = StringVar()
 urltext = StringVar()
 urltext.set("Enter URL to get in browser")
@@ -53,8 +53,9 @@ root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(1, weight=1)
 root.grid_columnconfigure(1, weight=1)
-frame1 = Frame(root)
-frame2 = Frame(root)
+
+frame1 = tk.Frame(root)
+frame2 = tk.Frame(root)
 frame1.grid(row=0, column=0, sticky="nsew")
 frame2.grid(row=0, column=1, sticky="nsew",padx=50,pady=50)
 
@@ -121,8 +122,7 @@ def showWebcam():
 
         # Begin user gesture take action
         if(prediction == 0):
-            url = openHand_command.get()
-
+            url = OpenHandCommand.get()
             if (url== ""):
                 showUser.set("Open Hand")   
             else:
@@ -131,8 +131,7 @@ def showWebcam():
         elif (prediction == 1):
             showUser.set("Peace Sign")
         elif(prediction == 2):
-            shellcmd = fist_command.get()
-
+            shellcmd = FistCommand.get()
             if(shellcmd==""):
                 showUser.set("Fist")
             else:
