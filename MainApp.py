@@ -13,7 +13,6 @@ import webbrowser
 import os
 
 ## Variables ##
-width, height = 450, 450
 startLeft, startTop = 80, 80
 endRight, endBottom = 300, 300
 color = (0, 0, 0)
@@ -22,16 +21,13 @@ firstThreshold = 50
 secondThreshold = 50
 numberRecoq = load_model('savedModel/imageRecog.h5')
 webcam = cv2.VideoCapture(0)
-webcam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
 
 ##Building the GUI
+webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
 root = tk.Tk()
-root.title("SignWriter")
-root.geometry("1000x1000")
-root.configure(bg="white")
-root.bind('<Escape>', lambda e: root.quit())
+root.title("Gesture IO")
+#root.configure(bg="black")
 openhand = './frontend/gestureImages/openhand.png'
 fist = './frontend/gestureImages/fist.png'
 peacesign = './frontend/gestureImages/peacesign.png'
@@ -43,18 +39,40 @@ photoFour = PhotoImage(file=thumbandpinky)
 OpenHandCommand = StringVar()
 FistCommand = StringVar()
 showUser = StringVar()
-w1 = Label(root, image=photoOne).grid(row=0, column=2)
-e1 = tk.Entry(root, textvariable=OpenHandCommand).grid(row=0, column=3)
-w2 = Label(root, image=photoTwo).grid(row=1, column=2)
-e2 = tk.Entry(root, textvariable=FistCommand).grid(row=1, column=3)
-w3 = Label(root, image=photoThree).grid(row=2, column=2)
-e3 = tk.Entry(root).grid(row=2, column=3)
-w4 = Label(root, textvariable=showUser).grid(row=2, column=1)
-        ## Possible choices for dropdown menu (possibly implemented later?)
-        ## gestureChoices = ["Open Browser", "Open Word", "Open Command Line Prompt"]
-        ##dropdownMenu = OptionMenu(root, stringVar, *gestureChoices)
-main = tk.Label(root)
-main.grid(row=1, column=1)
+urltext = StringVar()
+urltext.set("Enter URL to get in browser")
+programtext = StringVar()
+programtext.set("Enter desktop app name to launch")
+peacetext = StringVar()
+peacetext.set("TBC...")
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=1)
+root.grid_columnconfigure(1, weight=1)
+frame1 = Frame(root)
+frame2 = Frame(root)
+frame1.grid(row=0, column=0, sticky="nsew")
+frame2.grid(row=0, column=1, sticky="nsew",padx=50,pady=50)
+
+w1 = Label(frame2, image=photoOne).grid(row=1, column=0, sticky = "ew" ,padx=50)
+
+s1 = Label(frame2, textvariable=urltext).grid(row=0, column=1)
+e1 = tk.Entry(frame2, textvariable=OpenHandCommand).grid(row=1, column=1)
+e1.insert("0", "URL")
+e1.bind("<FocusIn>", clearPlaceHolder)
+w2 = Label(frame2, image=photoTwo).grid(row=2, column=0, sticky = "ew",pady=70, padx=50)
+
+s2 = Label(frame2, textvariable=programtext).grid(row=2, column=1)
+e2 = tk.Entry(frame2, textvariable=FistCommand).grid(row=3, column=1)
+
+w3 = Label(frame2, image=photoThree).grid(row=3, column=0, sticky = "ew",padx=50)
+
+s2 = Label(frame2, textvariable=peacetext).grid(row=4, column=1)
+e3 = tk.Entry(frame2).grid(row=5, column=1)
+
+w4 = Label(frame1, textvariable=showUser).grid(row=1, column=0)
+main = tk.Label(frame1)
+main.grid(row=0, column=0)
 ##tracking frames for intermittent prediction 
 frameCounter = 0
 def showWebcam():
