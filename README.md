@@ -13,4 +13,6 @@
 ## How it works
 <div style="text-align:center"><img src="https://github.com/cormacmchale/SignWriter/blob/master/images/project_flow_diagram.PNG" /></div>
 
-## 
+## The model
+
+## Capturing the gesture
