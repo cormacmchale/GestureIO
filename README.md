@@ -13,6 +13,9 @@
 ## How it works
 <div style="text-align:center"><img src="https://github.com/cormacmchale/SignWriter/blob/master/images/project_flow_diagram.PNG" /></div>
 
-## The model
+ ## Project Layout
+ This project contains two distinct "parts" that both work together:
+ * **Model**: The model has been trained using the
+ * **Frontend**: 
 
 ## Capturing the gesture
