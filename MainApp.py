@@ -13,7 +13,7 @@ from tkinter import Label, Entry, PhotoImage, StringVar
 import os
 import webbrowser
 
-## Variables ##
+# Variables
 startLeft, startTop = 80, 80
 endRight, endBottom = 300, 300
 color = (0, 0, 0)
@@ -25,60 +25,65 @@ numberRecoq = load_model('savedModel/imageRecog.h5')
 webcam = cv2.VideoCapture(0)
 fgbg = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
 
-##Building the GUI
+# Building the GUI
 webcam = cv2.VideoCapture(cv2.CAP_DSHOW)
+
 root = tk.Tk()
 root.title("Gesture IO")
-#root.configure(bg="black")
+# root.configure(bg="black")
+
 openhand = './frontend/gestureImages/openhand.png'
 fist = './frontend/gestureImages/fist.png'
 peacesign = './frontend/gestureImages/peacesign.png'
 thumbandpinky = './frontend/gestureImages/thumbandpinky.png'
+
 photoOne = PhotoImage(file=openhand)
 photoTwo = PhotoImage(file=fist)
 photoThree = PhotoImage(file=peacesign)
 photoFour = PhotoImage(file=thumbandpinky)
+
 OpenHandCommand = StringVar()
 FistCommand = StringVar()
 showUser = StringVar()
 urltext = StringVar()
+
 urltext.set("Enter URL to get in browser")
 programtext = StringVar()
 programtext.set("Enter desktop app name to launch")
 peacetext = StringVar()
 peacetext.set("TBC...")
+
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(1, weight=1)
 root.grid_columnconfigure(1, weight=1)
 
 frame1 = tk.Frame(root)
-frame2 = tk.Frame(root)
 frame1.grid(row=0, column=0)
-frame2.grid(row=0, column=1,padx=10)
 
+frame2 = tk.Frame(root)
+frame2.grid(row=0, column=1, padx=10)
 
 w1 = tk.Label(frame2, image=photoOne).grid(row=0, column=0, sticky="nsew")
 e1 = tk.Entry(frame2, textvariable=OpenHandCommand).grid(row=0, column=1)
 s1 = tk.Label(frame2, textvariable=urltext).grid(row=0, column=1, pady=(0,40))
 
-
 w2 = Label(frame2, image=photoTwo).grid(row=1, column=0, pady=50, sticky="nsew")
 e2 = tk.Entry(frame2, textvariable=FistCommand).grid(row=1, column=1)
 s2 = Label(frame2, textvariable=programtext).grid(row=1, column=1, pady=(0,40))
 
-
 w3 = Label(frame2, image=photoThree).grid(row=2, column=0, sticky="nsew")
 e3 = tk.Entry(frame2).grid(row=2, column=1)
 s3 = Label(frame2, textvariable=peacetext).grid(row=2, column=1,pady=(0,40))
-#s3.place(side="top")
+# s3.place(side="top")
 
 w4 = Label(frame1, textvariable=showUser).grid(row=1, column=0)
 main = tk.Label(frame1)
 main.grid(row=0, column=0)
 
-##tracking frames for intermittent prediction 
+# Tracking frames for intermittent prediction 
 frameCounter = 0
+
 def showWebcam():
     # Grab frame data from web-cam
     _, frame = webcam.read()
@@ -112,15 +117,18 @@ def showWebcam():
         img = Image.open('temp/originalImage.png') 
         img = img.crop((startLeft, startTop, endRight, endBottom))
         data = np.asarray(img, dtype='uint8').reshape(1, 48400)
+
         inputVector = data.copy()
         inputVector[inputVector > 0] = 1
         inputVector[inputVector < 1] = 0
+
         prediction = abstractPredic(inputVector, numberRecoq)
         # End preprocessing
 
         # Begin user gesture take action
         if(prediction == 0):
             url = OpenHandCommand.get()
+
             if (url== ""):
                 showUser.set("Open Hand")   
             else:
@@ -130,6 +138,7 @@ def showWebcam():
             showUser.set("Peace Sign")
         elif(prediction == 2):
             shellcmd = FistCommand.get()
+
             if(shellcmd==""):
                 showUser.set("Fist")
             else:
@@ -138,6 +147,7 @@ def showWebcam():
         elif(prediction == 3):
             showUser.set("Ignore Gesture")
         # End user gesture take action
+
         frameCounter = 0
 
 # Call show web-cam to begin capturing frames

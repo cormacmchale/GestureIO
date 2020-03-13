@@ -1,7 +1,7 @@
-# SignWriter
-Gesture-Based Type Writer
+# Gesture IO
+Application that allows users to perform certain actions when performing specific gestures.
 
-### Authors
+### Developers
 * Cormac McHale
 * Kevin Niland
 
