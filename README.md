@@ -1,6 +1,6 @@
 # Gesture IO
 Application that allows users to perform certain actions when performing specific gestures.
-![](https://github.com/cormacmchale/SignWriter/blob/master/project_flow_diagram.PNG)
+![](https://github.com/cormacmchale/SignWriter/blob/master/images/ef6e61f1-aa83-4aa1-880b-c93a8769a931_200x200.png)
 
 ### Developers
 * Cormac McHale
@@ -10,8 +10,6 @@ Application that allows users to perform certain actions when performing specifi
 * **Language:** Python
 * **Using:** Computers
 
-<<<<<<< HEAD
 ## How it works
 =======
-![](https://github.com/cormacmchale/SignWriter/blob/master/project_flow_diagram.PNG)
->>>>>>> c2b502f7d8fc20a5007eda7443674136160af15a
+![](https://github.com/cormacmchale/SignWriter/blob/master/images/project_flow_diagram.PNG)
