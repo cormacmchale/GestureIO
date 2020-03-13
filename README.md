@@ -8,3 +8,5 @@ Application that allows users to perform certain actions when performing specifi
 ### Development
 * **Language:** Python
 * **Using:** Computers
+
+## How it works
