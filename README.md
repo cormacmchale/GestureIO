@@ -21,4 +21,7 @@
  * **Frontend**: The frontend was done using tkinter. Tkinter is Python's de-facto standard GUI (Graphical User Interface) package. The frontend accesses the device's webcam, contains entry boxes for the user to specify what each gesture will do/open. The open hand gesture opens a URL, the peace sign gesture will ..., and the fist gesture will open a program on the user's device.
 
 ## Capturing the gesture
-To capture a gesture performed by the user, the user must perform a gesture within the defined area of the webcam. Once performed, the image of the gesture is converted to a numpy array, at which point it is then put through the trained model.
+To capture a gesture performed by the user, the user must perform a gesture within the defined area of the webcam. Once performed, the image of the gesture is converted to a numpy array, at which point it is then put through the trained model. The application has been set up in a way that will remove unnecessary background noise from the image i.e. it will only capture the user's hand and ignore background items such as chairs, windows, walls, etc.
+
+## Performing an action
+Once the application has captured the gesture, processed it, and put it through the trained model, the application will then perform a certain action based on the gesture the user makes. The action in question is based on what the user enters into the textboxes provided (for example, the user can open a URL or program).
