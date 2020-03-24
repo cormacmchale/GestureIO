@@ -25,3 +25,17 @@ To capture a gesture performed by the user, the user must perform a gesture with
 
 ## Performing an action
 Once the application has captured the gesture, processed it, and put it through the trained model, the application will then perform a certain action based on the gesture the user makes. The action in question is based on what the user enters into the textboxes provided (for example, the user can open a URL or program).
+
+## Requirements
+Several different libraries were used to develop the application. Before running the project, install the below libraries and packages first:
+* OpenCV - `pip install opencv-python`
+* Keras - `pip install Keras`
+* NumPy - `pip install numpy`
+* Pillow - `pip install Pillow`
+* Tkinter (Should already come pre-installed if you are using Python 3)
+
+You can either install the above libraries and packages separately or install them via the `requirements.txt` file provided: 
+
+## How to run
+1. Download or clone the project repo using `git clone https://github.com/cormacmchale/GestureIO`
+2. To run the application, use `python .\MainApp.py` from the root of the project.
