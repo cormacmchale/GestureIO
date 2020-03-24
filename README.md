@@ -34,8 +34,25 @@ Several different libraries were used to develop the application. Before running
 * Pillow - `pip install Pillow`
 * Tkinter (Should already come pre-installed if you are using Python 3)
 
-You can either install the above libraries and packages separately or install them via the `requirements.txt` file provided: 
-
 ## How to run
 1. Download or clone the project repo using `git clone https://github.com/cormacmchale/GestureIO`
 2. To run the application, use `python .\MainApp.py` from the root of the project.
+
+## Issues
+Throughout the development of the project, we kept track of any design decisions, development decisions, and issues we encountered using the __Issues__ tab of the this repository. Below are links to each issue, where a more detailed desciption of each is provided:
+#### Closed Issues
+The below issues have been closed and are considered finished/fully implemented in the context of the application:
+* [Gesture Ideas](https://github.com/cormacmchale/GestureIO/issues/10) - Here we discussed what gestures we decided to go with and what each gesture does in the context of the application
+* [GUI - Webcam and UI](https://github.com/cormacmchale/GestureIO/issues/9) - Here we discussed the GUI itself and how the user interacts with it
+* [GUI Design](https://github.com/cormacmchale/GestureIO/issues/8) - Here we discussed the design of the GUI and how it came about
+* [Building the dataset](https://github.com/cormacmchale/GestureIO/issues/7) - Here we discussed the building of the dataset, where we used our own gestures, and how it was used to train the model that gestures the user performs will be compared against
+* [Extracting an object from an image](https://github.com/cormacmchale/GestureIO/issues/6) - To enable us to develop an accurate gesture recognition application, we had to find a way to extract a particular object from an image
+* [Accessing the webcam](https://github.com/cormacmchale/GestureIO/issues/5) - Accessing the webcam is one of the main aspects of the application, the specifics of which are discussed here
+* [Gesture recognition](https://github.com/cormacmchale/GestureIO/issues/3) - How the application attempts to recognise a gesture is discussed here
+* [Finding an appropriate development environment](https://github.com/cormacmchale/GestureIO/issues/1) - Here we briefly discussed the hardware, language, and IDE we used to develop the application
+
+#### Open Issues
+The below issues are open and are considered as possible features to be implemented in future versions of the application:
+* [Building an executable](https://github.com/cormacmchale/GestureIO/issues/12) - We intended to have the entire application as an executable, however, we ran into problems in trying to do that
+* [Accessing the typing functionality on a machine](https://github.com/cormacmchale/GestureIO/issues/4) - We briefly discussed the possibility of accessing the typing functionality of the user's device here
+* [Building the app](https://github.com/cormacmchale/GestureIO/issues/2) - General discussion on building the application
