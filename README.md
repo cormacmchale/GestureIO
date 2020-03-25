@@ -56,3 +56,8 @@ The below issues are open and are considered as possible features to be implemen
 * [Building an executable](https://github.com/cormacmchale/GestureIO/issues/12) - We intended to have the entire application as an executable, however, we ran into problems in trying to do that
 * [Accessing the typing functionality on a machine](https://github.com/cormacmchale/GestureIO/issues/4) - We briefly discussed the possibility of accessing the typing functionality of the user's device here
 * [Building the app](https://github.com/cormacmchale/GestureIO/issues/2) - General discussion on building the application
+
+## Conclusion (Kevin)
+
+
+## Conclusion (Cormac)
