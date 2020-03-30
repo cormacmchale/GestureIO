@@ -10,7 +10,7 @@
 * **Language:** Python.
 * **Using:** Computers.
 
-## Program Demo
+## Program Demo and Repository Overview
 Below are videos of the program demo and an overview of the GitHub repository: 
 * [Program Demo - Part 1](https://www.youtube.com/watch?v=3BvW1zki2lM)
 * [Repository Description - Part 2](https://www.youtube.com/watch?v=L8y5t5tXebM)
