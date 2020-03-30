@@ -43,7 +43,7 @@ Several different libraries were used to develop the application. Before running
 1. Download or clone the project repo using `git clone https://github.com/cormacmchale/GestureIO`.
 2. To run the application, use `python .\MainApp.py` from the root of the project.
 
-## Issues
+## Issues/Further Documentation
 Throughout the development of the project, we kept track of any design decisions, development decisions, and issues we encountered using the __Issues__ tab of the this repository. Below are links to each issue, where a more detailed desciption of each is provided:
 #### Closed Issues
 The below issues have been closed and are considered finished/fully implemented in the context of the application:
